@@ -10,6 +10,8 @@ function renderPage($script, $queryParams = []) {
     $_GET = $queryParams;
     $_SERVER['REQUEST_METHOD'] = 'GET';
     $_SERVER['PHP_SELF'] = '/' . $script;
+    $_SERVER['HTTP_HOST'] = 'pisscat.com';
+    $_SERVER['REQUEST_URI'] = '/' . $script . ($queryParams ? '?' . http_build_query($queryParams) : '');
 
     ob_start();
     include __DIR__ . '/../' . $script;
@@ -18,11 +20,11 @@ function renderPage($script, $queryParams = []) {
 
 // 1. Test index.php rendering
 $htmlIndex = renderPage('index.php');
-if (strpos($htmlIndex, 'TUBE') === false || strpos($htmlIndex, 'Header Banner Ad Placement') === false) {
+if (strpos($htmlIndex, 'PISS') === false || strpos($htmlIndex, 'CAT') === false || strpos($htmlIndex, 'Header Banner Ad Placement') === false) {
     echo "[FAIL] index.php output verification failed.\n";
     exit(1);
 }
-echo "[OK] index.php renders correctly with Header Banner ad.\n";
+echo "[OK] index.php renders correctly with dark green theme and Header Banner ad.\n";
 
 // 2. Test search on index.php
 $htmlSearch = renderPage('index.php', ['q' => 'Sample']);
@@ -42,15 +44,15 @@ if (strpos($htmlCat, 'Category:') === false) {
 }
 echo "[OK] Category filtering on index.php verified.\n";
 
-// 4. Test watch.php rendering with Fluid Player
+// 4. Test watch.php rendering with Fluid Player and dual VAST ads
 $firstVid = $pdo->query("SELECT id FROM videos LIMIT 1")->fetchColumn();
 if ($firstVid) {
     $htmlWatch = renderPage('watch.php', ['id' => $firstVid]);
-    if (strpos($htmlWatch, 'fluidPlayer') === false || strpos($htmlWatch, 'tube-video-player') === false || strpos($htmlWatch, 'vastOptions') === false) {
+    if (strpos($htmlWatch, 'fluidPlayer') === false || strpos($htmlWatch, 'tube-video-player') === false || strpos($htmlWatch, 'vastAdList') === false) {
         echo "[FAIL] watch.php Fluid Player or VAST Ad rendering failed.\n";
         exit(1);
     }
-    echo "[OK] watch.php renders correctly with Fluid Player and VAST ads.\n";
+    echo "[OK] watch.php renders correctly with Fluid Player and dual VAST ads.\n";
 } else {
     echo "[WARN] No video found to test watch.php.\n";
 }

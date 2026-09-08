@@ -6,9 +6,29 @@ require_once __DIR__ . '/includes/ads.php';
 
 $pdo = getDB();
 
-$pageTitle = "Categories - Adult Tube";
+$pageTitle = "Categories - PISSCAT Free Adult Tube";
+$metaDescription = "Browse all adult categories on PISSCAT free adult tube.";
 
-// Fetch all categories with video count and latest thumbnail preview
+$page = max(1, intval($_GET['page'] ?? 1));
+$perPage = 20;
+$offset = ($page - 1) * $perPage;
+
+// Total categories
+$totalCategories = $pdo->query("SELECT COUNT(*) FROM categories")->fetchColumn();
+$totalPages = ceil($totalCategories / $perPage);
+
+// Pagination prev/next URLs for SEO
+$queryParams = $_GET;
+if ($page > 1) {
+    $queryParams['page'] = $page - 1;
+    $relPrev = 'categories.php?' . http_build_query($queryParams);
+}
+if ($page < $totalPages) {
+    $queryParams['page'] = $page + 1;
+    $relNext = 'categories.php?' . http_build_query($queryParams);
+}
+
+// Fetch categories with video count and latest thumbnail preview
 $categories = $pdo->query("
     SELECT c.*, COUNT(vc.video_id) AS total_videos,
            (SELECT v.thumbnail_path FROM videos v JOIN video_categories vc2 ON v.id = vc2.video_id WHERE vc2.category_id = c.id ORDER BY v.id DESC LIMIT 1) AS thumb_preview
@@ -16,20 +36,22 @@ $categories = $pdo->query("
     LEFT JOIN video_categories vc ON c.id = vc.category_id
     GROUP BY c.id
     ORDER BY c.name ASC
+    LIMIT $perPage OFFSET $offset
 ")->fetchAll();
 
 require_once __DIR__ . '/includes/header.php';
 ?>
 
-<div style="margin-bottom: 25px; border-bottom: 2px solid #222; padding-bottom: 12px;">
+<div style="margin-bottom: 25px; border-bottom: 2px solid #222; padding-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
     <h1 style="font-size: 24px; font-weight: 700; color: #fff;">
-        Browse Adult Categories (<?= count($categories) ?>)
+        Browse Adult Categories
     </h1>
+    <span style="color: #888; font-size: 14px;"><?= $totalCategories ?> categories</span>
 </div>
 
 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px;">
     <?php foreach ($categories as $cat): ?>
-        <a href="index.php?category=<?= urlencode($cat['slug']) ?>" style="display: block; background: #1a1a1a; border-radius: 8px; overflow: hidden; border: 1px solid #262626; transition: transform 0.2s, border-color 0.2s;" onmouseover="this.style.borderColor='#ff3366'; this.style.transform='translateY(-4px)';" onmouseout="this.style.borderColor='#262626'; this.style.transform='none';">
+        <a href="index.php?category=<?= urlencode($cat['slug']) ?>" style="display: block; background: #1a1a1a; border-radius: 8px; overflow: hidden; border: 1px solid #262626; transition: transform 0.2s, border-color 0.2s;" onmouseover="this.style.borderColor='#00b894'; this.style.transform='translateY(-4px)';" onmouseout="this.style.borderColor='#262626'; this.style.transform='none';">
             <div style="width: 100%; aspect-ratio: 16/9; background: #222; position: relative; overflow: hidden;">
                 <?php if (!empty($cat['thumb_preview'])): ?>
                     <img src="<?= htmlspecialchars($cat['thumb_preview']) ?>" alt="<?= htmlspecialchars($cat['name']) ?>" style="width: 100%; height: 100%; object-fit: cover;">
@@ -50,5 +72,33 @@ require_once __DIR__ . '/includes/header.php';
         </a>
     <?php endforeach; ?>
 </div>
+
+<!-- Pagination with Ellipsis -->
+<?php if ($totalPages > 1): ?>
+    <div class="pagination">
+        <?php if ($page > 1): ?>
+            <a href="categories.php?<?= http_build_query(array_merge($_GET, ['page' => $page - 1])) ?>">&laquo; Prev</a>
+        <?php endif; ?>
+
+        <?php
+        $range = 2;
+        for ($p = 1; $p <= $totalPages; $p++):
+            if ($p == 1 || $p == $totalPages || ($p >= $page - $range && $p <= $page + $range)):
+        ?>
+                <?php if ($p === $page): ?>
+                    <span class="active"><?= $p ?></span>
+                <?php else: ?>
+                    <a href="categories.php?<?= http_build_query(array_merge($_GET, ['page' => $p])) ?>"><?= $p ?></a>
+                <?php endif; ?>
+            <?php elseif ($p == $page - $range - 1 || $p == $page + $range + 1): ?>
+                <span class="dots">&hellip;</span>
+            <?php endif; ?>
+        <?php endfor; ?>
+
+        <?php if ($page < $totalPages): ?>
+            <a href="categories.php?<?= http_build_query(array_merge($_GET, ['page' => $page + 1])) ?>">Next &raquo;</a>
+        <?php endif; ?>
+    </div>
+<?php endif; ?>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

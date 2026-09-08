@@ -23,7 +23,7 @@ $defaultAds = [
         'slot_key' => 'header_banner',
         'title' => 'Header Top Banner (728x90)',
         'ad_type' => 'banner',
-        'ad_code' => '<div style="background:#222;color:#aaa;padding:15px;text-align:center;border:1px dashed #444;font-size:14px;">Header Banner Ad Placement (728x90)</div>',
+        'ad_code' => '<div style="background:#11221c;color:#00b894;padding:15px;text-align:center;border:1px dashed #00b894;font-size:14px;">Header Banner Ad Placement (728x90)</div>',
         'vast_url' => '',
         'is_active' => 1
     ],
@@ -31,7 +31,7 @@ $defaultAds = [
         'slot_key' => 'sidebar_banner',
         'title' => 'Sidebar Banner (300x250)',
         'ad_type' => 'banner',
-        'ad_code' => '<div style="background:#222;color:#aaa;padding:30px 15px;text-align:center;border:1px dashed #444;font-size:14px;">Sidebar Ad Placement (300x250)</div>',
+        'ad_code' => '<div style="background:#11221c;color:#00b894;padding:30px 15px;text-align:center;border:1px dashed #00b894;font-size:14px;">Sidebar Ad Placement (300x250)</div>',
         'vast_url' => '',
         'is_active' => 1
     ],
@@ -39,7 +39,7 @@ $defaultAds = [
         'slot_key' => 'above_player',
         'title' => 'Above Player Banner',
         'ad_type' => 'banner',
-        'ad_code' => '<div style="background:#222;color:#aaa;padding:10px;text-align:center;border:1px dashed #444;font-size:13px;margin-bottom:10px;">Above Player Banner Ad</div>',
+        'ad_code' => '<div style="background:#11221c;color:#00b894;padding:10px;text-align:center;border:1px dashed #00b894;font-size:13px;margin-bottom:10px;">Above Player Banner Ad</div>',
         'vast_url' => '',
         'is_active' => 1
     ],
@@ -47,16 +47,48 @@ $defaultAds = [
         'slot_key' => 'below_player',
         'title' => 'Below Player Banner',
         'ad_type' => 'banner',
-        'ad_code' => '<div style="background:#222;color:#aaa;padding:10px;text-align:center;border:1px dashed #444;font-size:13px;margin-top:10px;">Below Player Banner Ad</div>',
+        'ad_code' => '<div style="background:#11221c;color:#00b894;padding:10px;text-align:center;border:1px dashed #00b894;font-size:13px;margin-top:10px;">Below Player Banner Ad</div>',
         'vast_url' => '',
         'is_active' => 1
     ],
     [
         'slot_key' => 'instream_vast',
-        'title' => 'Fluid Player In-Stream VAST Ad URL (ExoClick)',
+        'title' => 'Fluid Player Preroll Ad 1 VAST URL',
         'ad_type' => 'vast',
         'ad_code' => '',
         'vast_url' => 'https://s.exoclick.com/vast.php?idzone=1234567',
+        'is_active' => 1
+    ],
+    [
+        'slot_key' => 'instream_vast_2',
+        'title' => 'Fluid Player Preroll Ad 2 VAST URL',
+        'ad_type' => 'vast',
+        'ad_code' => '',
+        'vast_url' => '',
+        'is_active' => 1
+    ],
+    [
+        'slot_key' => 'grid_inline_1',
+        'title' => 'In-Grid Banner Ad 1 (After Video 6)',
+        'ad_type' => 'banner',
+        'ad_code' => '<div style="background:#11221c;color:#00b894;padding:20px;text-align:center;border:1px dashed #00b894;font-size:13px;border-radius:8px;">Inline Grid Ad Slot 1</div>',
+        'vast_url' => '',
+        'is_active' => 1
+    ],
+    [
+        'slot_key' => 'grid_inline_2',
+        'title' => 'In-Grid Banner Ad 2 (After Video 12)',
+        'ad_type' => 'banner',
+        'ad_code' => '<div style="background:#11221c;color:#00b894;padding:20px;text-align:center;border:1px dashed #00b894;font-size:13px;border-radius:8px;">Inline Grid Ad Slot 2</div>',
+        'vast_url' => '',
+        'is_active' => 1
+    ],
+    [
+        'slot_key' => 'below_related',
+        'title' => 'Below Related Videos Banner',
+        'ad_type' => 'banner',
+        'ad_code' => '<div style="background:#11221c;color:#00b894;padding:15px;text-align:center;border:1px dashed #00b894;font-size:13px;margin-top:15px;border-radius:6px;">Below Related Videos Ad Placement</div>',
+        'vast_url' => '',
         'is_active' => 1
     ]
 ];
@@ -104,6 +136,16 @@ foreach ($categories as $cat) {
         $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $cat), '-'));
         $stmtInsertCat->execute([$cat, $slug]);
         echo "Category created: $cat\n";
+    }
+}
+
+// Seed sample search terms if empty
+$stmtTermCount = $pdo->query("SELECT COUNT(*) FROM search_terms");
+if ($stmtTermCount->fetchColumn() == 0) {
+    $sampleTerms = ['hardcore sex', 'amateur hd', 'brunette teen', 'asian babe', 'milf stepmom'];
+    $stmtAddTerm = $pdo->prepare("INSERT OR IGNORE INTO search_terms (term) VALUES (?)");
+    foreach ($sampleTerms as $t) {
+        $stmtAddTerm->execute([$t]);
     }
 }
 

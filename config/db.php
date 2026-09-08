@@ -59,6 +59,11 @@ try {
             is_active INTEGER DEFAULT 1,
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
         );
+
+        CREATE TABLE IF NOT EXISTS search_terms (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            term TEXT UNIQUE NOT NULL
+        );
     ");
 
 } catch (PDOException $e) {

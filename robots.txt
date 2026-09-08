@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /data/
+Disallow: /config/
+Disallow: /api/
+Allow: /
+
+Sitemap: https://pisscat.com/sitemap.php

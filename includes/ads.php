@@ -25,10 +25,21 @@ function renderAdSlot($slotKey) {
 }
 
 /**
- * Get Fluid Player VAST URL for in-stream ads
+ * Get Fluid Player VAST URL 1 for in-stream ads
  */
 function getInstreamVastUrl() {
     $ad = getAdSlot('instream_vast');
+    if ($ad && !empty($ad['vast_url'])) {
+        return $ad['vast_url'];
+    }
+    return '';
+}
+
+/**
+ * Get Fluid Player VAST URL 2 for in-stream ads
+ */
+function getInstreamVastUrl2() {
+    $ad = getAdSlot('instream_vast_2');
     if ($ad && !empty($ad['vast_url'])) {
         return $ad['vast_url'];
     }

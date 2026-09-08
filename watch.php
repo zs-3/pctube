@@ -35,7 +35,28 @@ if (!$video) {
 }
 
 $pageTitle = $video['title'];
-$instreamVastUrl = getInstreamVastUrl();
+$metaDescription = !empty($video['description']) ? substr(strip_tags($video['description']), 0, 150) . '...' : "Watch " . htmlspecialchars($video['title']) . " free adult video on PISSCAT.";
+$metaImage = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/' . $video['thumbnail_path'];
+
+// Construct JSON-LD VideoObject Schema for SEO
+$schema = [
+    "@context" => "https://schema.org",
+    "@type" => "VideoObject",
+    "name" => $video['title'],
+    "description" => !empty($video['description']) ? $video['description'] : $video['title'],
+    "thumbnailUrl" => [$metaImage],
+    "uploadDate" => date('c', strtotime($video['created_at'])),
+    "contentUrl" => (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/' . $video['video_path'],
+    "interactionStatistic" => [
+        "@type" => "InteractionCounter",
+        "interactionType" => ["@type" => "WatchAction"],
+        "userInteractionCount" => (int)$video['views']
+    ]
+];
+
+// Fetch dual in-stream preroll VAST URLs
+$vastUrl1 = getInstreamVastUrl();
+$vastUrl2 = getInstreamVastUrl2();
 
 // Fetch Related Videos (share same categories or recent videos)
 $catIdsArr = !empty($video['cat_ids']) ? explode(',', $video['cat_ids']) : [];
@@ -130,11 +151,11 @@ require_once __DIR__ . '/includes/header.php';
         </div>
 
         <!-- Related Videos Header -->
-        <h3 style="font-size: 16px; font-weight: bold; color: #fff; border-left: 4px solid #ff3366; padding-left: 10px; margin-bottom: 15px;">
+        <h3 style="font-size: 16px; font-weight: bold; color: #fff; border-left: 4px solid #00b894; padding-left: 10px; margin-bottom: 15px;">
             Related Videos
         </h3>
 
-        <!-- Related Videos Grid/List -->
+        <!-- Related Videos List -->
         <div style="display: flex; flex-direction: column; gap: 15px;">
             <?php foreach ($relatedVideos as $rel): ?>
                 <div style="display: flex; gap: 12px; background: #1a1a1a; border-radius: 6px; overflow: hidden; border: 1px solid #262626;">
@@ -152,6 +173,11 @@ require_once __DIR__ . '/includes/header.php';
                 </div>
             <?php endforeach; ?>
         </div>
+
+        <!-- Below Related Videos Ad Slot -->
+        <div style="margin-top: 20px;">
+            <?= renderAdSlot('below_related') ?>
+        </div>
     </div>
 </div>
 
@@ -161,13 +187,13 @@ require_once __DIR__ . '/includes/header.php';
 }
 </style>
 
-<!-- Initialize Fluid Player with ExoClick VAST in-stream ads -->
+<!-- Initialize Fluid Player with two sequential pre-roll VAST ads -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     var playerOptions = {
         layoutControls: {
             fillToContainer: true,
-            primaryColor: "#ff3366",
+            primaryColor: "#00b894",
             posterImage: <?= json_encode($video['thumbnail_path']) ?>,
             playButtonShowing: true,
             autoPlay: false,
@@ -175,16 +201,19 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    <?php if (!empty($instreamVastUrl)): ?>
-    playerOptions.vastOptions = {
-        adList: [
-            {
-                roll: 'preRoll',
-                vastTag: <?= json_encode($instreamVastUrl) ?>
-            }
-        ]
-    };
+    var vastAdList = [];
+    <?php if (!empty($vastUrl1)): ?>
+    vastAdList.push({ roll: 'preRoll', vastTag: <?= json_encode($vastUrl1) ?> });
     <?php endif; ?>
+    <?php if (!empty($vastUrl2)): ?>
+    vastAdList.push({ roll: 'preRoll', vastTag: <?= json_encode($vastUrl2) ?> });
+    <?php endif; ?>
+
+    if (vastAdList.length > 0) {
+        playerOptions.vastOptions = {
+            adList: vastAdList
+        };
+    }
 
     fluidPlayer('tube-video-player', playerOptions);
 });
