@@ -36,17 +36,18 @@ if (!$video) {
 
 $pageTitle = $video['title'];
 $metaDescription = !empty($video['description']) ? substr(strip_tags($video['description']), 0, 150) . '...' : "Watch " . htmlspecialchars($video['title']) . " free adult video on PISSCAT.";
-$metaImage = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/' . $video['thumbnail_path'];
+$metaImage = 'https://pisscat.com/' . $video['thumbnail_path'];
 
 // Construct JSON-LD VideoObject Schema for SEO
 $schema = [
     "@context" => "https://schema.org",
     "@type" => "VideoObject",
     "name" => $video['title'],
-    "description" => !empty($video['description']) ? $video['description'] : $video['title'],
-    "thumbnailUrl" => [$metaImage],
+    "description" => $metaDescription,
+    "thumbnailUrl" => 'https://pisscat.com/' . $video['thumbnail_path'],
     "uploadDate" => date('c', strtotime($video['created_at'])),
-    "contentUrl" => (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/' . $video['video_path'],
+    "contentUrl" => 'https://pisscat.com/' . $video['video_path'],
+    "embedUrl" => 'https://pisscat.com/watch.php?id=' . $video['id'],
     "interactionStatistic" => [
         "@type" => "InteractionCounter",
         "interactionType" => ["@type" => "WatchAction"],
@@ -151,7 +152,7 @@ require_once __DIR__ . '/includes/header.php';
         </div>
 
         <!-- Related Videos Header -->
-        <h3 style="font-size: 16px; font-weight: bold; color: #fff; border-left: 4px solid #00b894; padding-left: 10px; margin-bottom: 15px;">
+        <h3 style="font-size: 16px; font-weight: bold; color: #fff; border-left: 4px solid #ffb703; padding-left: 10px; margin-bottom: 15px;">
             Related Videos
         </h3>
 
@@ -187,13 +188,13 @@ require_once __DIR__ . '/includes/header.php';
 }
 </style>
 
-<!-- Initialize Fluid Player with two sequential pre-roll VAST ads -->
+<!-- Initialize Fluid Player with two independent sequential pre-roll VAST ads -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     var playerOptions = {
         layoutControls: {
             fillToContainer: true,
-            primaryColor: "#00b894",
+            primaryColor: "#ffb703",
             posterImage: <?= json_encode($video['thumbnail_path']) ?>,
             playButtonShowing: true,
             autoPlay: false,

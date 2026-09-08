@@ -67,6 +67,11 @@ if (!$vidData || $vidData['title'] !== $testTitle || $vidData['cat_names'] !== $
 }
 echo "[OK] Video Upload & Multi-Category linking verified (Video ID: $videoId).\n";
 
+// Cleanup test category and video
+$pdo->exec("DELETE FROM videos WHERE id = $videoId");
+$pdo->exec("DELETE FROM categories WHERE id = $catId");
+echo "[OK] Test artifacts cleaned up from database.\n";
+
 // 4. Test Ad Setting Update
 $newVast = "https://s.exoclick.com/vast.php?idzone=9999999";
 $stmtAd = $pdo->prepare("UPDATE ads SET vast_url = ? WHERE slot_key = 'instream_vast'");

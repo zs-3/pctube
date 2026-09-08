@@ -53,7 +53,7 @@ $slotDescriptions = [
             <input type="hidden" name="slot_key" value="<?= htmlspecialchars($ad['slot_key']) ?>">
 
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <h4 style="color: #00b894; font-size: 16px;">
+                <h4 style="color: #ffb703; font-size: 16px;">
                     <?= htmlspecialchars($ad['title']) ?>
                     <span style="font-size: 12px; color: #666; font-weight: normal; margin-left: 8px;">(Key: <?= htmlspecialchars($ad['slot_key']) ?>)</span>
                 </h4>

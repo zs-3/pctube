@@ -17,16 +17,9 @@ $offset = ($page - 1) * $perPage;
 $totalCategories = $pdo->query("SELECT COUNT(*) FROM categories")->fetchColumn();
 $totalPages = ceil($totalCategories / $perPage);
 
-// Pagination prev/next URLs for SEO
-$queryParams = $_GET;
-if ($page > 1) {
-    $queryParams['page'] = $page - 1;
-    $relPrev = 'categories.php?' . http_build_query($queryParams);
-}
-if ($page < $totalPages) {
-    $queryParams['page'] = $page + 1;
-    $relNext = 'categories.php?' . http_build_query($queryParams);
-}
+// Set SEO Rel Prev and Next Links
+$relPrev = ($page > 1) ? 'https://pisscat.com/categories.php?' . http_build_query(array_merge($_GET, ['page' => $page - 1])) : '';
+$relNext = ($page < $totalPages) ? 'https://pisscat.com/categories.php?' . http_build_query(array_merge($_GET, ['page' => $page + 1])) : '';
 
 // Fetch categories with video count and latest thumbnail preview
 $categories = $pdo->query("
@@ -51,7 +44,7 @@ require_once __DIR__ . '/includes/header.php';
 
 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px;">
     <?php foreach ($categories as $cat): ?>
-        <a href="index.php?category=<?= urlencode($cat['slug']) ?>" style="display: block; background: #1a1a1a; border-radius: 8px; overflow: hidden; border: 1px solid #262626; transition: transform 0.2s, border-color 0.2s;" onmouseover="this.style.borderColor='#00b894'; this.style.transform='translateY(-4px)';" onmouseout="this.style.borderColor='#262626'; this.style.transform='none';">
+        <a href="index.php?category=<?= urlencode($cat['slug']) ?>" style="display: block; background: #1a1a1a; border-radius: 8px; overflow: hidden; border: 1px solid #262626; transition: transform 0.2s, border-color 0.2s;" onmouseover="this.style.borderColor='#ffb703'; this.style.transform='translateY(-4px)';" onmouseout="this.style.borderColor='#262626'; this.style.transform='none';">
             <div style="width: 100%; aspect-ratio: 16/9; background: #222; position: relative; overflow: hidden;">
                 <?php if (!empty($cat['thumb_preview'])): ?>
                     <img src="<?= htmlspecialchars($cat['thumb_preview']) ?>" alt="<?= htmlspecialchars($cat['name']) ?>" style="width: 100%; height: 100%; object-fit: cover;">

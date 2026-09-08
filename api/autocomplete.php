@@ -1,9 +1,10 @@
 <?php
 // api/autocomplete.php
 
-require_once __DIR__ . '/../config/db.php';
-
+header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
+
+require_once __DIR__ . '/../config/db.php';
 
 $q = trim($_GET['q'] ?? '');
 

@@ -29,6 +29,7 @@ $ogImage = isset($metaImage) && !empty($metaImage) ? $metaImage : "https://pissc
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $pageTitleText ?></title>
     <meta name="description" content="<?= $metaDesc ?>">
+    <meta name="robots" content="index, follow">
 
     <!-- Canonical URL -->
     <link rel="canonical" href="<?= htmlspecialchars($currentUrl) ?>">
@@ -67,34 +68,34 @@ $ogImage = isset($metaImage) && !empty($metaImage) ? $metaImage : "https://pissc
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #0f0f0f; color: #f1f1f1; line-height: 1.5; }
         a { color: inherit; text-decoration: none; }
 
-        /* Header Layout - Dark Green / Teal Accent Theme (#00b894) */
+        /* Header Layout - Yellow Accent Theme (#ffb703) */
         header { background-color: #1a1a1a; border-bottom: 1px solid #2a2a2a; position: sticky; top: 0; z-index: 100; }
         .header-container { max-width: 1400px; margin: 0 auto; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
         .logo { font-size: 26px; font-weight: 900; color: #fff; letter-spacing: -0.5px; display: flex; align-items: center; gap: 4px; }
-        .logo span.logo-highlight { color: #00b894; }
+        .logo span.logo-highlight { color: #ffb703; }
 
         /* Search Bar & Autocomplete Dropdown */
         .search-box-wrapper { flex: 1; max-width: 500px; position: relative; }
         .search-box { display: flex; }
         .search-box input { width: 100%; padding: 10px 16px; background: #262626; border: 1px solid #333; border-radius: 20px 0 0 20px; color: #fff; font-size: 14px; outline: none; }
-        .search-box input:focus { border-color: #00b894; }
-        .search-box button { padding: 10px 20px; background: #00b894; border: none; border-radius: 0 20px 20px 0; color: #fff; font-weight: bold; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; gap: 6px; }
-        .search-box button:hover { background: #00a381; }
+        .search-box input:focus { border-color: #ffb703; }
+        .search-box button { padding: 10px 20px; background: #ffb703; border: none; border-radius: 0 20px 20px 0; color: #000; font-weight: bold; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; gap: 6px; }
+        .search-box button:hover { background: #e6a800; }
 
         .autocomplete-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: #1f1f1f; border: 1px solid #333; border-top: none; border-radius: 0 0 10px 10px; box-shadow: 0 8px 16px rgba(0,0,0,0.6); z-index: 1000; display: none; overflow: hidden; }
         .autocomplete-item { padding: 10px 16px; font-size: 14px; color: #ddd; cursor: pointer; border-bottom: 1px solid #2a2a2a; display: flex; align-items: center; gap: 8px; }
         .autocomplete-item:last-child { border-bottom: none; }
-        .autocomplete-item:hover { background: #2a2a2a; color: #00b894; }
+        .autocomplete-item:hover { background: #2a2a2a; color: #ffb703; }
 
         .header-nav { display: flex; align-items: center; gap: 15px; }
         .header-nav a { font-weight: 600; font-size: 14px; color: #ccc; transition: color 0.2s; display: flex; align-items: center; gap: 6px; }
-        .header-nav a:hover { color: #00b894; }
+        .header-nav a:hover { color: #ffb703; }
 
         /* Category Filter Bar */
         .category-bar { background: #141414; border-bottom: 1px solid #222; overflow-x: auto; white-space: nowrap; padding: 10px 20px; }
         .category-bar-inner { max-width: 1400px; margin: 0 auto; display: flex; gap: 10px; align-items: center; }
         .cat-chip { display: inline-block; padding: 6px 16px; background: #222; color: #ccc; border-radius: 20px; font-size: 13px; font-weight: 500; transition: all 0.2s; border: 1px solid #333; }
-        .cat-chip:hover, .cat-chip.active { background: #00b894; color: #fff; border-color: #00b894; }
+        .cat-chip:hover, .cat-chip.active { background: #ffb703; color: #000; border-color: #ffb703; font-weight: bold; }
 
         /* Container Main */
         .main-container { max-width: 1400px; margin: 20px auto; padding: 0 20px; min-height: 80vh; }
@@ -105,7 +106,7 @@ $ogImage = isset($metaImage) && !empty($metaImage) ? $metaImage : "https://pissc
         /* Video Grid Layout */
         .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; margin-top: 20px; }
         .video-card { background: #1a1a1a; border-radius: 8px; overflow: hidden; border: 1px solid #262626; transition: transform 0.2s, box-shadow 0.2s; }
-        .video-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.6); border-color: #00b894; }
+        .video-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.6); border-color: #ffb703; }
         .thumb-wrapper { position: relative; width: 100%; aspect-ratio: 16/9; background: #000; overflow: hidden; }
         .thumb-wrapper img { width: 100%; height: 100%; object-fit: cover; }
         .video-card-info { padding: 12px; }
@@ -117,14 +118,14 @@ $ogImage = isset($metaImage) && !empty($metaImage) ? $metaImage : "https://pissc
         /* Pagination Controls */
         .pagination { display: flex; justify-content: center; align-items: center; gap: 6px; margin: 40px 0; flex-wrap: wrap; }
         .pagination a, .pagination span { padding: 8px 14px; background: #1a1a1a; border: 1px solid #333; color: #ccc; border-radius: 4px; font-size: 14px; font-weight: 600; }
-        .pagination a:hover { background: #2a2a2a; color: #fff; border-color: #00b894; }
-        .pagination .active { background: #00b894; color: #fff; border-color: #00b894; }
+        .pagination a:hover { background: #2a2a2a; color: #fff; border-color: #ffb703; }
+        .pagination .active { background: #ffb703; color: #000; border-color: #ffb703; }
         .pagination .dots { background: transparent; border: none; color: #666; padding: 8px 6px; }
 
         /* Sort Toggle Buttons */
         .sort-btn-group { display: flex; gap: 8px; }
         .sort-btn { padding: 6px 14px; background: #222; border: 1px solid #333; border-radius: 20px; color: #aaa; font-size: 13px; font-weight: 600; transition: 0.2s; }
-        .sort-btn:hover, .sort-btn.active { background: #00b894; color: #fff; border-color: #00b894; }
+        .sort-btn:hover, .sort-btn.active { background: #ffb703; color: #000; border-color: #ffb703; }
 
         /* Responsive Layouts */
         @media (max-width: 768px) {
@@ -139,7 +140,7 @@ $ogImage = isset($metaImage) && !empty($metaImage) ? $metaImage : "https://pissc
 <header>
     <div class="header-container">
         <a href="index.php" class="logo">
-            PISS<span class="logo-highlight">CAT</span>
+            <span class="logo-highlight">PISS</span>CAT
         </a>
 
         <div class="search-box-wrapper">
@@ -153,7 +154,7 @@ $ogImage = isset($metaImage) && !empty($metaImage) ? $metaImage : "https://pissc
         <div class="header-nav">
             <a href="index.php"><i class="fa-solid fa-house"></i> Home</a>
             <a href="categories.php"><i class="fa-solid fa-layer-group"></i> Categories</a>
-            <a href="admin/login.php" target="_blank" style="color: #00b894;"><i class="fa-solid fa-user-gear"></i> Admin</a>
+            <a href="admin/login.php" target="_blank" style="color: #ffb703;"><i class="fa-solid fa-user-gear"></i> Admin</a>
         </div>
     </div>
 </header>

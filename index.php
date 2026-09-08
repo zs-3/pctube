@@ -63,16 +63,9 @@ $stmtCount->execute($params);
 $totalVideos = $stmtCount->fetchColumn();
 $totalPages = ceil($totalVideos / $perPage);
 
-// Pagination prev/next URLs for SEO
-$queryParams = $_GET;
-if ($page > 1) {
-    $queryParams['page'] = $page - 1;
-    $relPrev = 'index.php?' . http_build_query($queryParams);
-}
-if ($page < $totalPages) {
-    $queryParams['page'] = $page + 1;
-    $relNext = 'index.php?' . http_build_query($queryParams);
-}
+// Set SEO Rel Prev and Next Links
+$relPrev = ($page > 1) ? 'https://pisscat.com/index.php?' . http_build_query(array_merge($_GET, ['page' => $page - 1])) : '';
+$relNext = ($page < $totalPages) ? 'https://pisscat.com/index.php?' . http_build_query(array_merge($_GET, ['page' => $page + 1])) : '';
 
 // Sorting SQL clause
 $orderBySQL = ($sort === 'newest') ? "ORDER BY v.id DESC" : "ORDER BY v.views DESC, v.id DESC";
@@ -100,9 +93,9 @@ require_once __DIR__ . '/includes/header.php';
     <h1 style="font-size: 22px; font-weight: 700; color: #fff;">
         <?php
         if (!empty($searchQuery)) {
-            echo 'Search Results for: <span style="color: #00b894;">' . htmlspecialchars($searchQuery) . '</span>';
+            echo 'Search Results for: <span style="color: #ffb703;">' . htmlspecialchars($searchQuery) . '</span>';
         } elseif (!empty($activeCatSlug)) {
-            echo 'Category: <span style="color: #00b894;">' . htmlspecialchars($catObj['name'] ?? $activeCatSlug) . '</span>';
+            echo 'Category: <span style="color: #ffb703;">' . htmlspecialchars($catObj['name'] ?? $activeCatSlug) . '</span>';
         } else {
             echo 'Trending Videos';
         }
@@ -127,7 +120,7 @@ require_once __DIR__ . '/includes/header.php';
     <div style="background: #181818; padding: 60px 20px; text-align: center; border-radius: 8px; border: 1px solid #282828; margin: 40px 0;">
         <h3 style="color: #ccc; margin-bottom: 10px;">No videos found</h3>
         <p style="color: #777; font-size: 14px;">Try searching for different keywords or select a different category.</p>
-        <a href="index.php" style="display: inline-block; margin-top: 20px; padding: 10px 20px; background: #00b894; color: #fff; border-radius: 4px; font-weight: bold;">Browse All Videos</a>
+        <a href="index.php" style="display: inline-block; margin-top: 20px; padding: 10px 20px; background: #ffb703; color: #000; border-radius: 4px; font-weight: bold;">Browse All Videos</a>
     </div>
 <?php else: ?>
     <div class="video-grid">
@@ -172,13 +165,13 @@ require_once __DIR__ . '/includes/header.php';
             </div>
 
             <?php if ($cardIndex === 6): ?>
-                <div class="video-card grid-ad-card" style="grid-column: span 1; display: flex; align-items: center; justify-content: center; background: #11221c; border-color: #00b894;">
+                <div class="video-card grid-ad-card" style="grid-column: span 1; display: flex; align-items: center; justify-content: center; background: #221e10; border-color: #ffb703;">
                     <?= renderAdSlot('grid_inline_1') ?>
                 </div>
             <?php endif; ?>
 
             <?php if ($cardIndex === 12): ?>
-                <div class="video-card grid-ad-card" style="grid-column: span 1; display: flex; align-items: center; justify-content: center; background: #11221c; border-color: #00b894;">
+                <div class="video-card grid-ad-card" style="grid-column: span 1; display: flex; align-items: center; justify-content: center; background: #221e10; border-color: #ffb703;">
                     <?= renderAdSlot('grid_inline_2') ?>
                 </div>
             <?php endif; ?>

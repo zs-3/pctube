@@ -16,17 +16,17 @@ $currentPage = basename($_SERVER['PHP_SELF']);
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: system-ui, -apple-system, sans-serif; background: #121212; color: #e0e0e0; display: flex; min-height: 100vh; }
         .sidebar { width: 240px; background: #1a1a1a; border-right: 1px solid #2a2a2a; display: flex; flex-direction: column; }
-        .sidebar-brand { padding: 20px; font-size: 20px; font-weight: bold; color: #00b894; text-decoration: none; border-bottom: 1px solid #2a2a2a; text-align: center; }
+        .sidebar-brand { padding: 20px; font-size: 20px; font-weight: bold; color: #ffb703; text-decoration: none; border-bottom: 1px solid #2a2a2a; text-align: center; }
         .nav-menu { list-style: none; padding: 15px 0; }
         .nav-menu li a { display: block; padding: 12px 20px; color: #aaa; text-decoration: none; font-size: 15px; transition: 0.2s; }
-        .nav-menu li a:hover, .nav-menu li a.active { background: #2a2a2a; color: #00b894; border-left: 4px solid #00b894; }
+        .nav-menu li a:hover, .nav-menu li a.active { background: #2a2a2a; color: #ffb703; border-left: 4px solid #ffb703; }
         .main-content { flex: 1; padding: 30px; background: #121212; overflow-y: auto; }
         .header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 1px solid #2a2a2a; }
         .header-title { font-size: 24px; font-weight: bold; }
         .user-info { font-size: 14px; color: #888; }
         .btn { display: inline-block; padding: 8px 16px; border-radius: 4px; text-decoration: none; font-size: 14px; font-weight: bold; cursor: pointer; border: none; }
-        .btn-primary { background: #00b894; color: #fff; }
-        .btn-primary:hover { background: #00a381; }
+        .btn-primary { background: #ffb703; color: #fff; }
+        .btn-primary:hover { background: #e6a800; }
         .btn-danger { background: #dc3545; color: #fff; }
         .btn-danger:hover { background: #bd2130; }
         .btn-secondary { background: #333; color: #ccc; }
@@ -42,7 +42,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: bold; color: #ccc; }
         .form-control { width: 100%; padding: 10px; background: #222; border: 1px solid #333; border-radius: 4px; color: #fff; font-size: 14px; }
-        .form-control:focus { border-color: #00b894; outline: none; }
+        .form-control:focus { border-color: #ffb703; outline: none; }
         textarea.form-control { min-height: 100px; resize: vertical; }
         .checkbox-group { display: flex; flex-wrap: wrap; gap: 10px; background: #222; padding: 12px; border-radius: 4px; border: 1px solid #333; }
         .checkbox-label { display: flex; align-items: center; gap: 6px; font-size: 14px; cursor: pointer; color: #ddd; }
