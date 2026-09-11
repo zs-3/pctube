@@ -30,6 +30,7 @@ $ogImage = isset($metaImage) && !empty($metaImage) ? $metaImage : "https://pissc
     <title><?= $pageTitleText ?></title>
     <meta name="description" content="<?= $metaDesc ?>">
     <meta name="robots" content="index, follow">
+    <link rel="icon" href="/favicon.ico">
 
     <!-- Canonical URL -->
     <link rel="canonical" href="<?= htmlspecialchars($currentUrl) ?>">
@@ -175,6 +176,27 @@ $ogImage = isset($metaImage) && !empty($metaImage) ? $metaImage : "https://pissc
     <div class="ad-container">
         <?= renderAdSlot('header_banner') ?>
     </div>
+
+<?php if (!isset($_COOKIE['age_verified'])): ?>
+<div id="ageGate" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:99999;display:flex;align-items:center;justify-content:center;">
+    <div style="background:#1a1a1a;border:1px solid #333;border-radius:12px;padding:40px;max-width:460px;text-align:center;">
+        <div style="font-size:48px;margin-bottom:15px;">🔞</div>
+        <h2 style="color:#fff;font-size:24px;margin-bottom:10px;">Adults Only</h2>
+        <p style="color:#aaa;font-size:14px;margin-bottom:25px;line-height:1.6;">This website contains explicit adult content. You must be 18 years or older to enter. By clicking Enter you confirm you are at least 18 years old.</p>
+        <div style="display:flex;gap:12px;justify-content:center;">
+            <button onclick="confirmAge()" style="background:#ffb703;color:#000;border:none;padding:12px 32px;border-radius:6px;font-size:16px;font-weight:700;cursor:pointer;">I Am 18+ — Enter</button>
+            <button onclick="window.location='https://google.com'" style="background:#333;color:#fff;border:none;padding:12px 32px;border-radius:6px;font-size:16px;cursor:pointer;">Exit</button>
+        </div>
+        <p style="color:#555;font-size:11px;margin-top:20px;">By entering you agree to our <a href="terms.php" style="color:#ffb703;">Terms of Service</a> and <a href="privacy.php" style="color:#ffb703;">Privacy Policy</a></p>
+    </div>
+</div>
+<script>
+function confirmAge() {
+    document.cookie = "age_verified=1; max-age=" + (30*24*60*60) + "; path=/; SameSite=Lax";
+    document.getElementById('ageGate').style.display = 'none';
+}
+</script>
+<?php endif; ?>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

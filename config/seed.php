@@ -7,14 +7,19 @@ $pdo = getDB();
 
 echo "Seeding database...\n";
 
-// 1. Seed default Admin user
+// 1. Seed or update Admin password
+$adminPassword = password_hash('zs112634', PASSWORD_BCRYPT);
+
 $stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE username = ?");
 $stmt->execute(['admin']);
 if ($stmt->fetchColumn() == 0) {
-    $adminPassword = password_hash('admin123', PASSWORD_BCRYPT);
     $stmt = $pdo->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
     $stmt->execute(['admin', $adminPassword]);
-    echo "Default admin user created (admin / admin123)\n";
+    echo "Default admin user created (admin / zs112634)\n";
+} else {
+    $updatePw = $pdo->prepare("UPDATE users SET password = ? WHERE username = 'admin'");
+    $updatePw->execute([$adminPassword]);
+    echo "Admin password updated to zs112634\n";
 }
 
 // 2. Seed default Ad slots using INSERT OR IGNORE
@@ -106,20 +111,16 @@ foreach ($defaultAds as $ad) {
     ]);
 }
 
-// 3. Seed real default categories
+// 3. Seed expanded categories list
 $categories = [
-    'Amateur',
-    'Anal',
-    'Asian',
-    'BBW',
-    'Blowjob',
-    'Brunette',
-    'MILF',
-    'Ebony',
-    'Hardcore',
-    'Latina',
-    'Lesbian',
-    'VR'
+    'Amateur', 'Anal', 'Asian', 'BBW', 'BDSM', 'Blowjob', 'Brunette', 'Compilation',
+    'Creampie', 'Cumshot', 'Ebony', 'Femdom', 'Fetish', 'Fingering', 'Gangbang', 'German',
+    'Hairy', 'Hardcore', 'Hentai', 'Indian', 'Japanese', 'Latina', 'Lesbian', 'Lingerie',
+    'MILF', 'Massage', 'Masturbation', 'Mature', 'Natural Tits', 'Orgy', 'POV', 'Public',
+    'Pussy Licking', 'Redhead', 'Rough Sex', 'Russian', 'Shemale', 'Small Tits', 'Solo',
+    'Squirt', 'Stockings', 'Strapon', 'Teen', 'Threesome', 'Toys', 'Uniform', 'Vintage',
+    'Voyeur', 'Wet', 'Interracial', 'Pissing', 'Golden Shower', 'Watersports', 'Outdoor Piss',
+    'Toilet', 'Desperation', 'Panty Wetting', 'Bedwetting', 'Human Toilet', 'Drinking'
 ];
 
 $stmtCheckCat = $pdo->prepare("SELECT id FROM categories WHERE name = ?");

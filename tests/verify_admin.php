@@ -13,7 +13,7 @@ $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
 $stmt->execute(['admin']);
 $user = $stmt->fetch();
 
-if (!$user || !password_verify('admin123', $user['password'])) {
+if (!$user || !password_verify('zs112634', $user['password'])) {
     echo "[FAIL] Authentication check failed.\n";
     exit(1);
 }

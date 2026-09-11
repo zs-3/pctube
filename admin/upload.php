@@ -14,7 +14,7 @@ $categories = $pdo->query("SELECT * FROM categories ORDER BY name ASC")->fetchAl
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = trim($_POST['title'] ?? '');
     $description = trim($_POST['description'] ?? '');
-    $selectedCategories = $_POST['categories'] ?? [];
+    $selectedCategories = $_POST['category_ids'] ?? $_POST['categories'] ?? [];
 
     if (empty($title)) {
         $error = 'Video title is required.';
@@ -112,22 +112,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <div class="form-group">
             <label>Select Categories</label>
-            <div class="checkbox-group">
-                <?php if (empty($categories)): ?>
-                    <p style="color: #888; font-size: 13px;">No categories created yet. <a href="categories.php" style="color: #ff3366;">Add categories first</a>.</p>
-                <?php else: ?>
+            <?php if (empty($categories)): ?>
+                <p style="color: #888; font-size: 13px;">No categories created yet. <a href="categories.php" style="color: #ffb703;">Add categories first</a>.</p>
+            <?php else: ?>
+                <input type="text" id="catSearch" placeholder="Search categories..." style="width:100%;padding:10px;margin-bottom:8px;background:#222;border:1px solid #333;color:#fff;border-radius:4px;font-size:14px;">
+                <div id="catList" style="max-height:220px;overflow-y:auto;border:1px solid #333;border-radius:4px;padding:10px;background:#181818;">
                     <?php foreach ($categories as $cat): ?>
-                        <label class="checkbox-label">
-                            <input type="checkbox" name="categories[]" value="<?= $cat['id'] ?>">
+                        <label style="display:block;padding:6px 0;color:#ccc;cursor:pointer;font-size:14px;border-bottom:1px solid #222;">
+                            <input type="checkbox" name="category_ids[]" value="<?= $cat['id'] ?>">
                             <?= htmlspecialchars($cat['name']) ?>
                         </label>
                     <?php endforeach; ?>
-                <?php endif; ?>
-            </div>
+                </div>
+            <?php endif; ?>
         </div>
 
-        <button type="submit" class="btn btn-primary" style="padding: 12px 24px; font-size: 16px;">Upload Video</button>
+        <button type="submit" class="btn btn-primary" style="padding: 12px 24px; font-size: 16px; margin-top: 10px;">Upload Video</button>
     </form>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var catSearch = document.getElementById('catSearch');
+    if (catSearch) {
+        catSearch.addEventListener('input', function() {
+            var val = this.value.toLowerCase();
+            document.querySelectorAll('#catList label').forEach(function(label) {
+                label.style.display = label.textContent.toLowerCase().indexOf(val) > -1 ? 'block' : 'none';
+            });
+        });
+    }
+});
+</script>
 
 <?php require_once __DIR__ . '/footer.php'; ?>
